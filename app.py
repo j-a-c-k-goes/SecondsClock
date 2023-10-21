@@ -10,6 +10,7 @@ if __name__ == "__main__":
         print("-----------------------")
         SC = SecondsClock.SecondsClock()
         SC.update()
-        SC.displayTime()
         time.sleep(1)
         os.system("clear")
+        if SC.total_time_in_seconds >= SC.total_seconds_in_day:
+            SC.reset()

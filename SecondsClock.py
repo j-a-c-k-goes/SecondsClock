@@ -19,6 +19,8 @@ class SecondsClock:
         return self.current_minute
     def getCurrentSeconds(self):
         return self.current_second
+    def getTotalTime(self):
+        return self.total_time_in_seconds
     def setCurrentHour(self, new_hour):
         self.current_hour = new_hour
     def setCurrentMinute(self, new_minute):
@@ -35,14 +37,23 @@ class SecondsClock:
         return converted_minutes
     def sumTimeAsSeconds(self):
         time_in_seconds = ( self.convertHoursToSeconds( self.getCurrentHour() ) ) + ( self.convertMinutesToSeconds( self.getCurrentMinute() ) ) + ( self.getCurrentSeconds() )
+        self.setTotalTime(time_in_seconds)
         return time_in_seconds
+    def reset(self):
+        print("*** The day has concluded. ***")
+        self.setTotalTime(0)
+    def calcPercentDayComplete(self):
+        time_elapsed = self.sumTimeAsSeconds()
+        percent_day_complete = round( ((time_elapsed / self.total_seconds_in_day) * 100), 2)
+        return percent_day_complete
     def calcRemainingSeconds(self):
         return self.total_seconds_in_day - self.sumTimeAsSeconds()
     def displayTime(self):
         print( f"""SE\t{self.sumTimeAsSeconds()}\nSR\t{self.calcRemainingSeconds()}""" )
-        print( f"""\t{ round( ((self.sumTimeAsSeconds() / self.calcRemainingSeconds()) *100),2 ) }% Complete""")
+        print( f"""\t{ self.calcPercentDayComplete() }% Complete""")
     def update(self):
         self.setCurrentHour( datetime.now().hour )
         self.setCurrentMinute( datetime.now().minute )
         self.setCurrentSecond( datetime.now().second )
         self.setTotalTime( self.sumTimeAsSeconds() )
+        self.displayTime()
